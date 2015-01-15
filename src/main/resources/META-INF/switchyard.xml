@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sy:switchyard xmlns:camel="urn:switchyard-component-camel:config:1.1" xmlns:jms="urn:switchyard-component-camel-jms:config:1.1" xmlns:sca="http://docs.oasis-open.org/ns/opencsa/sca/200912" xmlns:sy="urn:switchyard-config:switchyard:1.1" name="concurrent-queue-consumer" targetNamespace="urn:com.example.switchyard:concurrent-queue-consumer:1.0">
+  <sca:composite name="concurrent-queue-consumer" targetNamespace="urn:com.example.switchyard:concurrent-queue-consumer:1.0">
+    <sca:component name="ConcurrentConsumerRoute">
+      <camel:implementation.camel>
+        <camel:java class="com.example.switchyard.cqc.ConcurrentConsumerRoute"/>
+      </camel:implementation.camel>
+      <sca:service name="ConcurrentConsumerService">
+        <sca:interface.java interface="com.example.switchyard.cqc.ConcurrentConsumerService"/>
+      </sca:service>
+    </sca:component>
+    <sca:service name="ConcurrentConsumerService" promote="ConcurrentConsumerRoute/ConcurrentConsumerService">
+      <sca:interface.java interface="com.example.switchyard.cqc.ConcurrentConsumerService"/>
+      <jms:binding.jms name="jms1">
+        <jms:queue>TESTQ</jms:queue>
+        <jms:connectionFactory>java:/JmsXA1</jms:connectionFactory>
+      </jms:binding.jms>
+    </sca:service>
+  </sca:composite>
+</sy:switchyard>
